@@ -3,7 +3,13 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 
 const firebaseConfig = {
-    // Je Firebase configuratie hier
+    apiKey: "AIzaSyBCXaYJI9dxwqKD1Qsb_9AOdsnVTPG2uHM",
+    authDomain: "pjotters-company.firebaseapp.com",
+    databaseURL: "https://pjotters-company-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "pjotters-company",
+    storageBucket: "pjotters-company.appspot.com",
+    messagingSenderId: "64413422793",
+    appId: "1:64413422793:web:4025770645944818d6e918"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -56,8 +62,20 @@ function createGameCard(game) {
     `;
 }
 
+// Voeg deze functie toe aan het begin van gallery.js
+function checkLogin() {
+    const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+    if (!isLoggedIn) {
+        window.location.href = '/login.html';
+        return false;
+    }
+    return true;
+}
+
 // Games weergeven
 async function displayGames() {
+    if (!checkLogin()) return;
+    
     const preferences = await getUserPreferences();
     const recommendedGames = await getFilteredGames(preferences);
     
